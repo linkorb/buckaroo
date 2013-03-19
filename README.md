@@ -6,7 +6,7 @@ API client for Buckaroo BPE 3.0 for PHP. PSR-0 compliant.
 
 This class is designed to work with the following WSDL:
 
-	[https://checkout.buckaroo.nl/soap/?WSDL](https://checkout.buckaroo.nl/soap/?WSDL)
+[https://checkout.buckaroo.nl/soap/?WSDL](https://checkout.buckaroo.nl/soap/?WSDL)
 
 ## Features
 
@@ -38,7 +38,7 @@ To make it work,
 * run `php example.php`
 
 This will connect to Buckaroo, and send a test transaction. 
-The response of the request will be displayed using var_dump
+The response of the request will be displayed using var_dump().
 
 ## Contributing
 
