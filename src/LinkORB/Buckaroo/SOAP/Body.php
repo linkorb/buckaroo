@@ -20,4 +20,5 @@ class Body
  	public $Services;
  	public $CustomParameters;
  	public $AdditionalParameters;
+        public $RefundInfo;
 }

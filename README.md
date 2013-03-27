@@ -51,9 +51,13 @@ open a new issue report so that we or others may take care of it.
 
 ## Todo
 
-* Support other actions like TransactionStatus, TransactionRequestSpecification, RefundInfo, InvoiceInfo, etc
-* Implement methods for user verification [https://pushover.net/api#verification](https://pushover.net/api#verification)
 * Add unit tests
+* Need test refund, creditnote.
+* Need recurring transaction.
+
+## Done
+
+* Support transaction request, invoiceinfo, refundinfo.
 
 ## License
 Please check LICENSE.md for full license information

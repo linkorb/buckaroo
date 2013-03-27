@@ -10,7 +10,7 @@ class Request {
 	private $soapClient = null;
 	private $websiteKey = null;
 	private $culture = 'nl-NL';
-	private $testMode = false;
+	private $testMode = true;
 	function __construct($websiteKey = null) {
 		
 		$this->websiteKey = $websiteKey;
@@ -23,7 +23,7 @@ class Request {
 		$this->soapClient->loadPem($filename);
 	}
 
-	public function sendTransactionRequest($TransactionRequest) {
+	public function sendRequest($TransactionRequest, $type) {
 
 		if (!$this->websiteKey) throw new InvalidArgumentException('websiteKey not defined');
 
@@ -71,7 +71,21 @@ class Request {
 		} else {
 			$this->soapClient->__SetLocation('https://checkout.buckaroo.nl/soap/');
 		}
-		return $this->soapClient->TransactionRequest($TransactionRequest);
+		switch($type) {
+			case 'invoiceinfo':
+				$this->soapClient->InvoiceInfo($TransactionRequest);
+				break;
+			case 'transaction':
+				$this->soapClient->TransactionRequest($TransactionRequest);
+				break;
+			case 'refundinfo':
+				$this->soapClient->RefundInfo($TransactionRequest);
+				break;
+		}
+
+		$return['response'] = $this->soapClient->__getLastResponse();
+		$return['request']  = $this->soapClient->__getLastRequest();
+		return $return;
 	}
 }
 
