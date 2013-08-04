@@ -38,7 +38,7 @@ class Example {
 		$TransactionRequest->ClientIP = new SOAP\IPAddress('123.123.123.123');
 
 		// Send the request to Buckaroo, and retrieve the response
-		$response = $req->sendTransactionRequest($TransactionRequest);
+		$response = $req->sendRequest($TransactionRequest, 'transaction');
 
 		// Display the response:
 		var_dump($response);
