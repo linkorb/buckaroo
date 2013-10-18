@@ -10,7 +10,7 @@ class Request {
 	private $soapClient = null;
 	private $websiteKey = null;
 	private $culture = 'nl-NL';
-	private $testMode = true;
+	private $testMode = false;
 	function __construct($websiteKey = null) {
 		
 		$this->websiteKey = $websiteKey;
