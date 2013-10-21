@@ -11,9 +11,11 @@ class Request {
 	private $websiteKey = null;
 	private $culture = 'nl-NL';
 	private $testMode = false;
-	function __construct($websiteKey = null) {
+
+	public function __construct($websiteKey = null, $testMode = false) {
 		
 		$this->websiteKey = $websiteKey;
+        $this->testMode = $testMode;
 
 		$wsdl_url = "https://checkout.buckaroo.nl/soap/soap.svc?wsdl";
 		$this->soapClient = new SoapClientWSSEC($wsdl_url, array('trace'=>1));
@@ -87,5 +89,38 @@ class Request {
 		$return['request']  = $this->soapClient->__getLastRequest();
 		return $return;
 	}
-}
 
+    /**
+     * @param boolean $testMode
+     * @return Request
+     */
+    public function setTestMode($testMode) {
+        $this->testMode = $testMode;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getTestMode() {
+        return $this->testMode;
+    }
+
+    /**
+     * @param string $culture
+     * @return Request
+     */
+    public function setCulture($culture) {
+        $this->culture = $culture;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCulture() {
+        return $this->culture;
+    }
+}
