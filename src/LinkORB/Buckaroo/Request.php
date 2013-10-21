@@ -13,16 +13,32 @@ class Request
     private $culture = 'nl-NL';
     private $testMode = false;
     private $channel  = 'Web';
+    protected static $defaultSoapOptions = array(
+        'trace' => 1,
+        'classmap' => array(
+            'Body' => 'LinkORB\\Buckaroo\\SOAP\\Type\\Body',
+            'Status' => 'LinkORB\\Buckaroo\\SOAP\\Type\\Status',
+            'RequiredAction' => 'LinkORB\\Buckaroo\\SOAP\\Type\\RequiredAction',
+            'ParameterError' => 'LinkORB\\Buckaroo\\SOAP\\Type\\ParameterError',
+            'CustomParameterError' => 'LinkORB\\Buckaroo\\SOAP\\Type\\CustomParameterError',
+            'ServiceError' => 'LinkORB\\Buckaroo\\SOAP\\Type\\ServiceError',
+            'ActionError' => 'LinkORB\\Buckaroo\\SOAP\\Type\\ActionError',
+            'ChannelError' => 'LinkORB\\Buckaroo\\SOAP\\Type\\ChannelError',
+            'RequestErrors' => 'LinkORB\\Buckaroo\\SOAP\\Type\\RequestErrors',
+            'StatusCode' => 'LinkORB\\Buckaroo\\SOAP\\Type\\StatusCode',
+            'StatusSubCode' => 'LinkORB\\Buckaroo\\SOAP\\Type\\StatusCode',
+        )
+    );
 
-    public function __construct($websiteKey = null, $testMode = false)
+    public function __construct($websiteKey = null, $testMode = false, array $soapOptions = array())
     {
         
         $this->websiteKey = $websiteKey;
         $this->testMode = $testMode;
 
-        $wsdl_url = "https://checkout.buckaroo.nl/soap/soap.svc?wsdl";
-        $this->soapClient = new SoapClientWSSEC($wsdl_url, array('trace'=>1));
-    }
+		$wsdl_url = "https://checkout.buckaroo.nl/soap/soap.svc?wsdl";
+		$this->soapClient = new SoapClientWSSEC($wsdl_url, array_merge(static::$defaultSoapOptions, $soapOptions));
+	}
 
     public function loadPem($filename)
     {
@@ -79,47 +95,47 @@ class Request
         $soapHeaders[] = new \SOAPHeader('https://checkout.buckaroo.nl/PaymentEngine/', 'MessageControlBlock', $Header->MessageControlBlock);
         $soapHeaders[] = new \SOAPHeader('http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd', 'Security', $Header->Security);
         $this->soapClient->__setSoapHeaders($soapHeaders);
-
-        if ($this->testMode) {
-            $this->soapClient->__SetLocation('https://testcheckout.buckaroo.nl/soap/');
-        } else {
-            $this->soapClient->__SetLocation('https://checkout.buckaroo.nl/soap/');
-        }
-
-        switch($type) {
-            case 'invoiceinfo':
-                $this->soapClient->InvoiceInfo($TransactionRequest);
-                break;
-            case 'transaction':
-                $this->soapClient->TransactionRequest($TransactionRequest);
-                break;
+        
+		if ($this->testMode) {
+			$this->soapClient->__SetLocation('https://testcheckout.buckaroo.nl/soap/');
+		} else {
+			$this->soapClient->__SetLocation('https://checkout.buckaroo.nl/soap/');
+		}
+		switch($type) {
+			case 'invoiceinfo':
+				$this->soapClient->InvoiceInfo($TransactionRequest);
+				break;
+			case 'transaction':
+				$this->soapClient->TransactionRequest($TransactionRequest);
+				break;
             case 'transactionstatus':
                 $this->soapClient->TransactionStatus($TransactionRequest);
                 break;
-            case 'refundinfo':
-                $this->soapClient->RefundInfo($TransactionRequest);
-                break;
-        }
+			case 'refundinfo':
+				$this->soapClient->RefundInfo($TransactionRequest);
+				break;
+		}
 
-        $return['response'] = $this->soapClient->__getLastResponse();
-        $return['request']  = $this->soapClient->__getLastRequest();
-        return $return;
-    }
+		$return['response'] = $this->soapClient->__getLastResponse();
+		$return['request']  = $this->soapClient->__getLastRequest();
+		return $return;
+	}
 
     /**
      * @param boolean $testMode
      * @return Request
      */
-    public function setTestMode($testMode)
+    public function setTestMode($testMode) 
     {
         $this->testMode = $testMode;
+
         return $this;
     }
 
     /**
      * @return boolean
      */
-    public function getTestMode()
+    public function getTestMode() 
     {
         return $this->testMode;
     }
@@ -131,13 +147,14 @@ class Request
     public function setCulture($culture)
     {
         $this->culture = $culture;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getCulture()
+    public function getCulture() 
     {
         return $this->culture;
     }
