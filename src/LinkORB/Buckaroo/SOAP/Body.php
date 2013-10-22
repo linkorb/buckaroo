@@ -23,4 +23,5 @@ class Body
     public $RefundInfo;
     public $Transaction;
     public $ContinueOnIncomplete;
+    public $PushURL;
 }
