@@ -62,4 +62,10 @@ open a new issue report so that we or others may take care of it.
 ## License
 Please check LICENSE.md for full license information
 
+## Brought to you by the LinkORB Engineering team
+
+<img src="http://www.linkorb.com/d/meta/tier1/images/linkorbengineering-logo.png" width="200px" /><br />
+Check out our other projects at [linkorb.com/engineering](http://www.linkorb.com/engineering).
+
+Btw, we're hiring!
 
