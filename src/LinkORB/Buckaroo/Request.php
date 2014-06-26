@@ -12,6 +12,7 @@ class Request
     private $websiteKey = null;
     private $culture = 'nl-NL';
     private $testMode = false;
+    private $channel  = 'Web';
 
     public function __construct($websiteKey = null, $testMode = false)
     {
@@ -26,6 +27,11 @@ class Request
     public function loadPem($filename)
     {
         $this->soapClient->loadPem($filename);
+    }
+
+    public function setChannel($channel)
+    {
+	$this->channel = $channel;
     }
 
     public function sendRequest($TransactionRequest, $type)
@@ -43,7 +49,7 @@ class Request
         $Header->MessageControlBlock->Culture = $this->culture;
 
         $Header->MessageControlBlock->TimeStamp = time();
-        $Header->MessageControlBlock->Channel = 'Web';
+        $Header->MessageControlBlock->Channel = $this->channel;
         $Header->Security = new SOAP\SecurityType();
         $Header->Security->Signature = new SOAP\SignatureType();
         $Header->Security->Signature->SignedInfo = new SOAP\SignedInfoType();
@@ -79,6 +85,7 @@ class Request
         } else {
             $this->soapClient->__SetLocation('https://checkout.buckaroo.nl/soap/');
         }
+
         switch($type) {
             case 'invoiceinfo':
                 $this->soapClient->InvoiceInfo($TransactionRequest);
