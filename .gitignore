@@ -1,3 +1,4 @@
 vendor/*
 config.ini
 composer.phar
+/nbproject/private/
