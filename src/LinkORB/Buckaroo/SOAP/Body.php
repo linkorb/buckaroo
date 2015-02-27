@@ -19,7 +19,7 @@ class Body
  	public $StartRecurrent;
  	public $Services;
  	public $CustomParameters;
- 	public $AdditionalParameters;
+    public $AdditionalParameters;
     public $RefundInfo;
-	public $Transaction;
+    public $Transaction;
 }

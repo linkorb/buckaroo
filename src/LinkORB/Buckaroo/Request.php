@@ -93,7 +93,7 @@ class Request
             case 'transaction':
                 $this->soapClient->TransactionRequest($TransactionRequest);
                 break;
-			case 'transactionstatus':
+            case 'transactionstatus':
                 $this->soapClient->TransactionStatus($TransactionRequest);
                 break;
             case 'refundinfo':
