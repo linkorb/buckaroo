@@ -7,6 +7,11 @@ class SoapClientWSSEC extends \SoapClient
 	private $pemdata = null;
 
 	public function __doRequest ($request, $location, $action, $version, $one_way = 0) {
+		// get active locale
+		$locale = setlocale(LC_NUMERIC, '0');
+		// use en_US locale
+		setlocale(LC_NUMERIC, 'en_US.UTF-8');
+		
 		$domDOC = new \DOMDocument();
 		$domDOC->loadXML($request);	
 					
@@ -17,7 +22,14 @@ class SoapClientWSSEC extends \SoapClient
 		//Sign the document					
 		$this->SignDomDocument($domDOC);
 		
-		return parent::__doRequest($domDOC->saveXML($domDOC->documentElement), $location, $action, $version, $one_way);
+		// perform the request
+		$ret = parent::__doRequest($domDOC->saveXML($domDOC->documentElement), $location, $action, $version, $one_way);
+		
+		// set locale back to previous locale
+		setlocale(LC_NUMERIC, $locale);
+		
+		// return the result
+		return $ret;
 	}
 
 	public function loadPem($pemfilename) {
