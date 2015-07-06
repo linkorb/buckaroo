@@ -6,12 +6,19 @@ class SoapClientWSSEC extends \SoapClient
 {
 	private $pemdata = null;
 
-	public function __doRequest ($request, $location, $action, $version, $one_way = 0) {
-		// get active locale
+	public function __call($name, $args)
+	{
+		// buckaroo requires all numbers to have period notation, otherwise
+		// an internal error will occur on the server.
 		$locale = setlocale(LC_NUMERIC, '0');
-		// use en_US locale
 		setlocale(LC_NUMERIC, 'en_US.UTF-8');
-		
+		$ret = parent::__call($name, $args);
+		setlocale(LC_NUMERIC, $locale);
+		return $ret;
+	}
+
+	public function __doRequest ($request, $location, $action, $version, $one_way = 0) {
+
 		$domDOC = new \DOMDocument();
 		$domDOC->loadXML($request);	
 					
@@ -22,14 +29,7 @@ class SoapClientWSSEC extends \SoapClient
 		//Sign the document					
 		$this->SignDomDocument($domDOC);
 		
-		// perform the request
-		$ret = parent::__doRequest($domDOC->saveXML($domDOC->documentElement), $location, $action, $version, $one_way);
-		
-		// set locale back to previous locale
-		setlocale(LC_NUMERIC, $locale);
-		
-		// return the result
-		return $ret;
+		return parent::__doRequest($domDOC->saveXML($domDOC->documentElement), $location, $action, $version, $one_way);
 	}
 
 	public function loadPem($pemfilename) {
