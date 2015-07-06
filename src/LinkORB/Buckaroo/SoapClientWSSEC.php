@@ -11,7 +11,7 @@ class SoapClientWSSEC extends \SoapClient
 		// buckaroo requires all numbers to have period notation, otherwise
 		// an internal error will occur on the server.
 		$locale = setlocale(LC_NUMERIC, '0');
-		setlocale(LC_NUMERIC, 'en_US.UTF-8');
+		setlocale(LC_NUMERIC, array('en_US', 'en_US.UTF-8'));
 		$ret = parent::__call($name, $args);
 		setlocale(LC_NUMERIC, $locale);
 		return $ret;
