@@ -6,7 +6,19 @@ class SoapClientWSSEC extends \SoapClient
 {
 	private $pemdata = null;
 
+	public function __call($name, $args)
+	{
+		// buckaroo requires all numbers to have period notation, otherwise
+		// an internal error will occur on the server.
+		$locale = setlocale(LC_NUMERIC, '0');
+		setlocale(LC_NUMERIC, array('en_US', 'en_US.UTF-8'));
+		$ret = parent::__call($name, $args);
+		setlocale(LC_NUMERIC, $locale);
+		return $ret;
+	}
+
 	public function __doRequest ($request, $location, $action, $version, $one_way = 0) {
+
 		$domDOC = new \DOMDocument();
 		$domDOC->loadXML($request);	
 					
