@@ -101,18 +101,20 @@ class Request
 		} else {
 			$this->soapClient->__SetLocation('https://checkout.buckaroo.nl/soap/');
 		}
+
+        $return = [];
 		switch($type) {
 			case 'invoiceinfo':
-				$this->soapClient->InvoiceInfo($TransactionRequest);
+                $return['result'] = $this->soapClient->InvoiceInfo($TransactionRequest);
 				break;
 			case 'transaction':
-				$this->soapClient->TransactionRequest($TransactionRequest);
+				$return['result'] = $this->soapClient->TransactionRequest($TransactionRequest);
 				break;
             case 'transactionstatus':
-                $this->soapClient->TransactionStatus($TransactionRequest);
+                $return['result'] = $this->soapClient->TransactionStatus($TransactionRequest);
                 break;
 			case 'refundinfo':
-				$this->soapClient->RefundInfo($TransactionRequest);
+                $return['result'] = $this->soapClient->RefundInfo($TransactionRequest);
 				break;
 		}
 
