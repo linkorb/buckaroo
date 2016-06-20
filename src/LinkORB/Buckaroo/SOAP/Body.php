@@ -11,6 +11,7 @@ class Body
  	public $Order;
  	public $Description;
  	public $ClientIP;
+ 	public $CustomerName;
  	public $ReturnURL;
  	public $ReturnURLCancel;
  	public $ReturnURLError;
