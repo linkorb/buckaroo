@@ -4,6 +4,7 @@ namespace LinkORB\Buckaroo\Response;
 
 use LinkORB\Buckaroo\Response;
 use LinkORB\Buckaroo\SignatureComposer\SignatureComposer;
+use Sarciszewski\PHPFuture\Security;
 
 /**
  * PostResponse can be used to verify and read post and push responses from Buckaroo.
@@ -60,7 +61,13 @@ class PostResponse implements \ArrayAccess
      */
     public function isValid(SignatureComposer $composer)
     {
-        return $this->signature === $composer->compose($this->parameters);
+        // Constant Time String Comparison @see http://php.net/hash_equals
+        if (!function_exists('hash_equals')) {
+            // Polyfill for PHP < 5.6
+            return Security::hashEquals($composer->compose($this->parameters), $this->signature);
+        } else {
+            return hash_equals($composer->compose($this->parameters), $this->signature);
+        }
     }
 
     /**
