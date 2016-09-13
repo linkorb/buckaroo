@@ -102,7 +102,7 @@ class Request
 			$this->soapClient->__SetLocation('https://checkout.buckaroo.nl/soap/');
 		}
 
-        $return = [];
+        $return = array();
 		switch($type) {
 			case 'invoiceinfo':
                 $return['result'] = $this->soapClient->InvoiceInfo($TransactionRequest);
